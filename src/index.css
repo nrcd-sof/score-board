@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+/* body {
   background-color: rgb(240, 253, 244);
-}
+} */
+
+/* *:hover {
+  border: 1px blue solid;
+} */
