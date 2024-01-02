@@ -2,10 +2,10 @@
 
 const themeSnippets = {
   light: {
-    header: "#C8FDD7",
+    headerBg: "bg-header-light",
   },
   dark: {
-    header: "#788F80",
+    headerBg: "bg-header-dark",
   },
   // Add more languages and tokens as needed
 };

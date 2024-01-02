@@ -4,9 +4,10 @@ import logo from "./logo.png";
 import { useAppState } from "./store/AppContext";
 
 function App() {
-  const appState = useAppState();
-  const translate = appState.translate;
-  const theme = appState.state.theme;
+  const {
+    translate,
+    state: { theme },
+  } = useAppState();
 
   useEffect(() => {
     // Update the body style when the theme changes

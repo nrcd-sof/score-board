@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useReducer } from "react";
+import themeSnippets from "./params/styles";
 import translations from "./params/translations";
 
 // Initial state
@@ -44,7 +45,7 @@ const AppProvider = ({ children }) => {
     return translations[state.language][token] || token; // Fallback to the token if translation is not available
   };
 
-  // const styles = themeSnippets[state.theme];
+  const styles = themeSnippets[state.theme];
   // console.log(styles);
 
   return (
@@ -53,6 +54,7 @@ const AppProvider = ({ children }) => {
         state,
         actions: { toggleTheme, toggleLanguage },
         translate,
+        styles,
       }}
     >
       {children}

@@ -4,17 +4,11 @@ import logo from "../logo.png";
 import { useAppState } from "../store/AppContext";
 
 const Header = () => {
-  const { state, actions } = useAppState();
+  const { state, actions, styles } = useAppState();
 
   const { theme, language } = state;
   return (
-    <div
-      className={`${
-        theme === "light"
-          ? "bg-header-light border-header-light"
-          : "bg-header-dark border-header-dark"
-      } border-b shadow-sm sticky top-0 z-40`}
-    >
+    <div className={`${styles.headerBg} border-b shadow-sm sticky top-0 z-40`}>
       <header className="flex justify-between items-center px-3 max-w-6xl mx-auto">
         {/* Logo */}
         <div className="flex items-center">
@@ -27,23 +21,12 @@ const Header = () => {
         </div>
         <div>
           <ul className="flex space-x-4">
-            {/* Theme Switcher */}
-            <li className="flex items-center space-x-4">
-              <button className="text-sm" onClick={actions.toggleTheme}>
-                {theme === "dark" ? <MdLightMode /> : <MdDarkMode />}
-              </button>
-            </li>
-
-            {/* Language Switcher */}
+            {/* Templates Button */}
             <li className="flex items-center space-x-1">
               <button
-                className="text-sm flex items-center space-x-1"
-                onClick={actions.toggleLanguage}
+                className={`mt-1 mb-1 text-sm border rounded-full px-4 py-2 border-header-${theme}`}
               >
-                <MdLanguage className="h-4 w-4 text-green-600" />
-                <span className="top-0 right-0 p-1 text-xs bg-green-700 text-white rounded">
-                  {language}
-                </span>
+                Templates
               </button>
             </li>
 
@@ -53,6 +36,26 @@ const Header = () => {
                 className={`mt-1 mb-1 text-sm border rounded-full px-4 py-2 border-header-${theme}`}
               >
                 Sign In
+              </button>
+            </li>
+
+            {/* Language Switcher */}
+            <li className="flex items-center space-x-1">
+              <button
+                className="text-sm flex items-center space-x-1"
+                onClick={actions.toggleLanguage}
+                data-testid="toggle-theme-button"
+              >
+                <MdLanguage className="h-4 w-4 text-green-600" />
+                <span className="top-0 right-0 p-1 text-xs bg-green-700 text-white rounded">
+                  {language === "EN" ? "DE" : "EN"}
+                </span>
+              </button>
+            </li>
+            {/* Theme Switcher */}
+            <li className="flex items-center space-x-4">
+              <button className="text-sm" onClick={actions.toggleTheme}>
+                {theme === "dark" ? <MdLightMode /> : <MdDarkMode />}
               </button>
             </li>
           </ul>
