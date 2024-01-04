@@ -1,14 +1,17 @@
 import React from "react";
 import { MdDarkMode, MdLanguage, MdLightMode } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../logo.png";
 import { useAppState } from "../store/AppContext";
 
 const Header = () => {
   const { state, actions, styles } = useAppState();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { theme, language } = state;
+
+  const isPlayPage = location.pathname === "/play";
   return (
     <div className={`${styles.headerBg} border-b shadow-sm sticky top-0 z-40`}>
       <header className="flex justify-between items-center px-3 max-w-6xl mx-auto">
@@ -26,14 +29,25 @@ const Header = () => {
         </div>
         <div>
           <ul className="flex space-x-4">
-            {/* Templates Button */}
-            <li className="flex items-center space-x-1">
-              <button
-                className={`mt-1 mb-1 text-sm border rounded-full px-4 py-2 border-header-${theme}`}
-              >
-                Templates
-              </button>
-            </li>
+            {/* Conditional rendering for Templates or Manage Players Button */}
+            {isPlayPage ? (
+              <li className="flex items-center space-x-1">
+                <button
+                  className={`mt-1 mb-1 text-sm border rounded-full px-4 py-2 border-header-${theme}`}
+                  onClick={() => actions.toggleModal()}
+                >
+                  Manage Players
+                </button>
+              </li>
+            ) : (
+              <li className="flex items-center space-x-1">
+                <button
+                  className={`mt-1 mb-1 text-sm border rounded-full px-4 py-2 border-header-${theme}`}
+                >
+                  Templates
+                </button>
+              </li>
+            )}
 
             {/* Sign-in Button */}
             <li className="flex items-center space-x-1">

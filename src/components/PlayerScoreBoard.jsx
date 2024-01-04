@@ -7,7 +7,7 @@ export default function PlayerScoreBoard({
 }) {
   const [scoreInput, setScoreInput] = useState("");
   const inputRef = useRef();
-  const { playerId, playerName, isCurrentPlayer, totalScore } = player;
+  const { id, name, isCurrentPlayer, totalScore } = player;
 
   const handleScoreChange = (e) => {
     const newScore = +e.target.value;
@@ -29,17 +29,17 @@ export default function PlayerScoreBoard({
 
   return (
     <div
-      key={playerId}
+      key={id}
       className={`bg-gray-200 p-4 rounded focus:outline-none ${
         isTemporaryWinner ? "bg-green-200" : ""
       }`}
     >
       <label className="block mb-2">
-        <span className="text-lg font-bold">{playerName}</span>
+        <span className="text-lg font-bold">{name}</span>
         <input
           type="text"
           value={scoreInput}
-          onChange={(e) => handleScoreChange(e, playerId)}
+          onChange={(e) => handleScoreChange(e)}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === "Tab") {
               e.preventDefault(); // Prevent default Tab behavior
