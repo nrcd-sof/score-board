@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import React from "react";
 import App from "./App";
 import { AppProvider } from "./store/AppContext";
@@ -21,7 +21,7 @@ describe("App", () => {
   });
 
   it("changes body background color", () => {
-    const { rerender } = render(
+    render(
       <AppProvider>
         <App />
       </AppProvider>

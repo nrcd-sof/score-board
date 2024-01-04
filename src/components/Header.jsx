@@ -1,17 +1,22 @@
 import React from "react";
 import { MdDarkMode, MdLanguage, MdLightMode } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 import logo from "../logo.png";
 import { useAppState } from "../store/AppContext";
 
 const Header = () => {
   const { state, actions, styles } = useAppState();
+  const navigate = useNavigate();
 
   const { theme, language } = state;
   return (
     <div className={`${styles.headerBg} border-b shadow-sm sticky top-0 z-40`}>
       <header className="flex justify-between items-center px-3 max-w-6xl mx-auto">
-        {/* Logo */}
-        <div className="flex items-center">
+        {/* Logo with a link to the home page */}
+        <div
+          className={`mt-1 mb-1 px-4 py-2 flex items-center cursor-pointer border rounded-full border-header-${theme}`}
+          onClick={() => navigate("/")}
+        >
           <img
             src={logo}
             alt="ScoreBoard Logo"
@@ -33,7 +38,7 @@ const Header = () => {
             {/* Sign-in Button */}
             <li className="flex items-center space-x-1">
               <button
-                className={`mt-1 mb-1 text-sm border rounded-full px-4 py-2 border-header-${theme}`}
+                className={`mt-1 mb-1 px-4 py-2 text-sm border rounded-full border-header-${theme}`}
               >
                 Sign In
               </button>
