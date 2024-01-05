@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
-import { RiDeleteBin6Fill, RiEdit2Fill } from "react-icons/ri";
 import Modal from "../UI/Modal";
 import { useAppState } from "../store/AppContext";
+import PlayerName from "./PlayerName";
 
 export default function PlayerListModal({ isOpen, onClose }) {
   const { actions, computePlayersArray, translate } = useAppState();
@@ -29,17 +29,6 @@ export default function PlayerListModal({ isOpen, onClose }) {
     }
   };
 
-  const handleDeletePlayer = (playerId) => {
-    const newPlayerArray = derivedPlayerArray.filter(
-      (player) => player.id !== playerId
-    );
-    //reorder the players
-    newPlayerArray.forEach((player, index) => {
-      player.order = index + 1;
-    });
-    actions.setPlayers(newPlayerArray);
-  };
-
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="flex flex-col items-center p-4">
@@ -48,7 +37,7 @@ export default function PlayerListModal({ isOpen, onClose }) {
           <label className="mr-2">
             Add Player:
             <input
-              className="border ml-2 p-1"
+              className="border ml-2 p-1 rounded-md"
               type="text"
               value={newPlayerName}
               onChange={(e) => setNewPlayerName(e.target.value)}
@@ -64,26 +53,7 @@ export default function PlayerListModal({ isOpen, onClose }) {
         </div>
         <ul className="w-full">
           {derivedPlayerArray.map((player) => (
-            <li
-              key={player.id}
-              className="flex items-center justify-between mb-2 bg-gray-100 p-2 rounded"
-            >
-              {player.name}
-              <div className="flex items-center">
-                <button
-                  className="text-blue-500 mr-2"
-                  onClick={() => handleDeletePlayer(player.id)}
-                >
-                  <RiEdit2Fill />
-                </button>
-                <button
-                  className="text-red-500"
-                  onClick={() => handleDeletePlayer(player.id)}
-                >
-                  <RiDeleteBin6Fill />
-                </button>
-              </div>
-            </li>
+            <PlayerName key={player.id} player={player} />
           ))}
         </ul>
       </div>
