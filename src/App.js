@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import Play from "./pages/Play";
+import PlayerListContainer from "./pages/Preview";
 import { useAppState } from "./store/AppContext";
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/play" element={<Play />} />
+          <Route path="/preview" element={<PlayerListContainer />} />
         </Routes>
       </Router>
     </>

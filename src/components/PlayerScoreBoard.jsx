@@ -4,6 +4,7 @@ export default function PlayerScoreBoard({
   player,
   isTemporaryWinner,
   handleSubmit,
+  showModal,
 }) {
   const [scoreInput, setScoreInput] = useState("");
   const inputRef = useRef();
@@ -47,6 +48,7 @@ export default function PlayerScoreBoard({
             }
           }}
           ref={inputRef}
+          tabIndex={showModal ? "-1" : "0"}
           readOnly={!isCurrentPlayer}
           className="w-full border p-2 mt-1 focus:outline-none"
         />

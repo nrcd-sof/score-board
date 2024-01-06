@@ -89,6 +89,7 @@ const MultiPlayerScoreTracker = () => {
             player={player}
             isTemporaryWinner={isTemporaryWinner(player.id)}
             handleSubmit={handleSubmit}
+            showModal={showModal}
           />
         ))}
       </div>

@@ -13,7 +13,10 @@ const Header = () => {
 
   const isPlayPage = location.pathname === "/play";
   return (
-    <div className={`${styles.headerBg} border-b shadow-sm sticky top-0 z-40`}>
+    <div
+      id="header"
+      className={`${styles.headerBg} border-b shadow-sm sticky top-0 z-40`}
+    >
       <header className="flex justify-between items-center px-3 max-w-6xl mx-auto">
         {/* Logo with a link to the home page */}
         <div
