@@ -172,23 +172,43 @@ const AppProvider = ({ children }) => {
   const translate = (token) => {
     return translations[state.language][token] || token; // Fallback to the token if translation is not available
   };
+  const computedStates = {
+    roundCounts: state.scores / state.players.length,
+    maxScore: Math.max(...state.scores),
+    isRoundInProgress: state.scores.length % state.players.length !== 0,
+    computePlayersArray: () => {
+      const playerArray = Object.entries(state.players).map(([id, player]) => ({
+        id: +id,
+        name: player.name,
+        order: player.order,
+        isCurrentPlayer: +id === state.currentPlayerId,
+        totalScore: state.scores
+          .filter((score) => score.playerId === +id)
+          .reduce((acc, score) => acc + score.score, 0),
+      }));
 
-  const computePlayersArray = () => {
-    const playerArray = Object.entries(state.players).map(([id, player]) => ({
-      id: +id,
-      name: player.name,
-      order: player.order,
-      isCurrentPlayer: +id === state.currentPlayerId,
-      totalScore: state.scores
-        .filter((score) => score.playerId === +id)
-        .reduce((acc, score) => acc + score.score, 0),
-    }));
+      // Sort the playerArray based on the 'order' property
+      playerArray.sort((a, b) => a.order - b.order);
 
-    // Sort the playerArray based on the 'order' property
-    playerArray.sort((a, b) => a.order - b.order);
-
-    return playerArray;
+      return playerArray;
+    },
   };
+  // const computePlayersArray = () => {
+  //   const playerArray = Object.entries(state.players).map(([id, player]) => ({
+  //     id: +id,
+  //     name: player.name,
+  //     order: player.order,
+  //     isCurrentPlayer: +id === state.currentPlayerId,
+  //     totalScore: state.scores
+  //       .filter((score) => score.playerId === +id)
+  //       .reduce((acc, score) => acc + score.score, 0),
+  //   }));
+
+  //   // Sort the playerArray based on the 'order' property
+  //   playerArray.sort((a, b) => a.order - b.order);
+
+  //   return playerArray;
+  // };
 
   return (
     <AppContext.Provider
@@ -208,7 +228,7 @@ const AppProvider = ({ children }) => {
         },
         translate,
         styles,
-        computePlayersArray,
+        computedStates,
       }}
     >
       {children}

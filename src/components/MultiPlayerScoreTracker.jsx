@@ -7,12 +7,11 @@ const MultiPlayerScoreTracker = () => {
   const {
     state: { currentPlayerId, scores, showModal },
     actions,
-    computePlayersArray,
+    computedStates: { computePlayersArray },
   } = useAppState();
 
   // playerTotalScores is an array of objects with the following structure: {id: 1, totalScore: 0} that gets updated every time a score is added
   const derivedPlayerArray = computePlayersArray();
-  console.log("multi: derivedPlayerArray", derivedPlayerArray);
 
   // Find if the player has the highest score
   const isTemporaryWinner = (playerId) => {

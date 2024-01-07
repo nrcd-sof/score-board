@@ -8,8 +8,11 @@ import {
 } from "react-icons/ri";
 import { useAppState } from "../store/AppContext";
 
-export default function PlayerName({ player, dragOverItemId }) {
-  const { actions, computePlayersArray } = useAppState();
+export default function PlayerName({ player }) {
+  const {
+    actions,
+    computedStates: { computePlayersArray },
+  } = useAppState();
   const derivedPlayerArray = computePlayersArray();
   const [isEditing, setIsEditing] = useState(false);
   const [newPlayerName, setNewPlayerName] = useState(player.name);
@@ -25,19 +28,25 @@ export default function PlayerName({ player, dragOverItemId }) {
     setPlayerNameBeforeEdit(player.name);
   };
 
-  const cancelEdit = () => {
+  const cancelEdit = (e) => {
+    if (e.type === "blur") return;
     setIsEditing(false);
+    inputRef.current.value = playerNameBeforeEdit;
     setNewPlayerName(playerNameBeforeEdit);
   };
 
   const handleNameChange = (e) => {
+    e.stopPropagation();
     setNewPlayerName(e.target.value);
   };
 
-  const handleUpdatePlayerName = () => {
+  const handleUpdatePlayerName = (e) => {
+    e.preventDefault();
     const payload = { id: player.id, name: newPlayerName };
     actions.changePlayerName(payload);
     setIsEditing(false);
+    setPlayerNameBeforeEdit(newPlayerName);
+    focusNextTabElement(e);
   };
 
   const handleDeletePlayer = (playerId) => {
@@ -49,7 +58,27 @@ export default function PlayerName({ player, dragOverItemId }) {
       player.order = index + 1;
     });
     actions.setPlayers(newPlayerArray);
+    focusNextTabElement(null);
   };
+
+  const handleBlur = (e) => {
+    if (document.activeElement.tagName !== "BUTTON" && isEditing) {
+      cancelEdit(e);
+    }
+  };
+
+  const focusNextTabElement = (e) => {
+    e.preventDefault();
+    const nextTabIndex =
+      player.order < derivedPlayerArray.length ? player.order + 1 : 1;
+    const nextElement = document.querySelector(`[tabindex="${nextTabIndex}"]`);
+    console.log("nextElement", nextElement);
+    nextElement.focus();
+  };
+
+  //   useEffect(() => {
+  //     console.log("playerName updated:", newPlayerName);
+  //   }, [newPlayerName]);
 
   return (
     <>
@@ -68,21 +97,21 @@ export default function PlayerName({ player, dragOverItemId }) {
           setIsEditing(true);
           inputRef.current.select();
         }}
-        onBlur={() => {
-          cancelEdit();
-        }}
+        onBlur={handleBlur}
         ref={inputRef}
         readOnly={!isEditing}
         onKeyDown={(e) => {
           if (e.key === "Tab") {
-            cancelEdit();
+            cancelEdit(e);
+            focusNextTabElement(e);
           }
           if (e.key === "Escape") {
-            cancelEdit();
+            cancelEdit(e);
+            focusNextTabElement(e);
           }
 
           if (isEditing && e.key === "Enter") {
-            handleUpdatePlayerName();
+            handleUpdatePlayerName(e);
           }
         }}
         tabIndex={player.order}
@@ -93,7 +122,10 @@ export default function PlayerName({ player, dragOverItemId }) {
             <button
               tabIndex="-1"
               className="text-blue-500 mr-2"
-              onClick={() => handleUpdatePlayerName()}
+              onClick={(e) => {
+                console.log("check clicked");
+                handleUpdatePlayerName(e);
+              }}
             >
               <RiCheckFill />
             </button>

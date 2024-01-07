@@ -4,7 +4,7 @@ import { useAppState } from "../store/AppContext";
 import PlayerName from "./PlayerName";
 
 export default function PlayerListModal({ isOpen, onClose }) {
-  const { actions, computePlayersArray, translate } = useAppState();
+  const { actions, computedStates, translate } = useAppState();
   const [newPlayerName, setNewPlayerName] = useState("");
   const inputRef = useRef();
 
@@ -12,10 +12,9 @@ export default function PlayerListModal({ isOpen, onClose }) {
   const dragItem = useRef();
   const dragOverItem = useRef();
 
-  const derivedPlayerArray = computePlayersArray();
-  console.log("Modal: derivedPlayerArray", derivedPlayerArray);
+  const derivedPlayerArray = computedStates.computePlayersArray();
 
-  const handleAddPlayer = () => {
+  const handleAddPlayer = (e) => {
     if (newPlayerName.trim() !== "") {
       const min = 100000; // Minimum value (6 digits)
       const max = 9999999; // Maximum value (7 digits)
@@ -30,6 +29,7 @@ export default function PlayerListModal({ isOpen, onClose }) {
       actions.addPlayer(newPlayer);
       setNewPlayerName("");
       inputRef.current.focus();
+      //   focusFirstPlayer(e);
     }
   };
   const dragStart = (e, id) => {
@@ -82,6 +82,14 @@ export default function PlayerListModal({ isOpen, onClose }) {
     e.preventDefault();
   };
 
+  const focusFirstPlayer = (e) => {
+    e.preventDefault();
+
+    const firstElement = document.querySelector(`[tabindex="${1}"]`);
+    console.log("firstElement", firstElement);
+    firstElement?.focus();
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="flex flex-col items-center p-4">
@@ -92,12 +100,17 @@ export default function PlayerListModal({ isOpen, onClose }) {
             <input
               className="border ml-2 p-1 rounded-md"
               type="text"
+              //set focus to the input element
+              autoFocus
               value={newPlayerName}
               onChange={(e) => setNewPlayerName(e.target.value)}
               ref={inputRef}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  handleAddPlayer();
+                  handleAddPlayer(e);
+                }
+                if (e.key === "Tab") {
+                  focusFirstPlayer(e);
                 }
               }}
             />
